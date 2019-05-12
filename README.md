@@ -1,0 +1,2 @@
+# nginx_http_response_body_module
+基于Nginx开发的http模块， 增加了response_body内部变量，该内部变量可以获取nginx请求的响应结果
