@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ngx_addon_name=ngx_http_response_body
+HTTP_MODULES="$HTTP_MODULES ngx_http_response_body"
+NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_response_body.c"
