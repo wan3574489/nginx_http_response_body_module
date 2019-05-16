@@ -25,7 +25,7 @@ static ngx_http_module_t ngx_http_response_body_ctx = {
         NULL     /* merge location configuration (7) */
 };
 
-ngx_module_t ngx_http_response_body_module = {
+ngx_module_t ngx_http_response_body = {
         NGX_MODULE_V1,
         &ngx_http_response_body_ctx,
         ngx_http_response_body_command,
