@@ -1,6 +1,6 @@
 
 
-#include "ngx_http_response_body.h";
+#include "ngx_http_response_body.h"
 #include <ngx_string.h>
 static ngx_http_output_body_filter_pt    ngx_http_next_body_filter;
 
@@ -65,7 +65,7 @@ static ngx_int_t ngx_http_response_body_ini(ngx_conf_t *cf){
 }
 
 static ngx_int_t ngx_http_response_body_filter(ngx_http_request_t *r, ngx_chain_t *chain){
-    int i = 0;
+    
     ngx_chain_t  *cl;
     ngx_buf_t    *buf, *next;
     size_t        len;
