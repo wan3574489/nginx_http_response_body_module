@@ -2,6 +2,8 @@
 
 #include "ngx_http_response_body.h";
 #include <ngx_string.h>
+
+
 static ngx_http_output_body_filter_pt    ngx_http_next_body_filter;
 
 static ngx_str_t new_varaible_response_body = ngx_string("response_body");
@@ -56,12 +58,28 @@ static ngx_int_t   ngx_http_response_body_preconfiguration(ngx_conf_t *cf){
 
 static ngx_int_t ngx_http_response_body_ini(ngx_conf_t *cf){
 
+    ngx_http_core_main_conf_t  *cmcf;
+    ngx_http_handler_pt        *h;
+
+    cmcf = ngx_http_conf_get_module_main_conf(cf, ngx_http_core_module);
+
+    h = ngx_array_push(&cmcf->phases[NGX_HTTP_ACCESS_PHASE].handlers);
+    if (h == NULL) {
+        return NGX_ERROR;
+    }
+
+    *h = ngx_http_response_bodyt_handler;
+
     ngx_http_next_body_filter = ngx_http_top_body_filter;
     ngx_http_top_body_filter = ngx_http_response_body_filter;
 
     new_varaible_response_body_index = ngx_http_get_variable_index(cf,&new_varaible_response_body);
 
     return NGX_OK;
+}
+
+static ngx_int_t ngx_http_response_bodyt_handler(ngx_http_request_t *r){
+    return NGX_DECLINED;
 }
 
 static ngx_int_t ngx_http_response_body_filter(ngx_http_request_t *r, ngx_chain_t *chain){
@@ -76,14 +94,26 @@ static ngx_int_t ngx_http_response_body_filter(ngx_http_request_t *r, ngx_chain_
     cl = chain;
     buf = cl->buf;
 
+    //如果是静态文件就记录文件的目录地址
+    if(buf->file!= NULL){
+        v->len = buf->file->name.len;
+        v->valid = 1;
+        v->valid = 1;
+        v->no_cacheable = 0;
+        v->not_found = 0;
+        v->data = buf->file->name.data;
+        return ngx_http_next_body_filter(r,chain);
+    }
+
     if (cl->next == NULL) {
+
         v->len = buf->last - buf->pos;
         v->valid = 1;
         v->no_cacheable = 0;
         v->not_found = 0;
         v->data = buf->pos;
 
-        return NGX_OK;
+        return ngx_http_next_body_filter(r,chain);
     }
 
     next = cl->next->buf;
