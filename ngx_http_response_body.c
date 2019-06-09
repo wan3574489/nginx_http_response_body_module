@@ -1,6 +1,6 @@
 
 
-#include "ngx_http_response_body.h";
+#include "ngx_http_response_body.h"
 #include <ngx_string.h>
 
 
@@ -27,7 +27,7 @@ static ngx_http_module_t ngx_http_response_body_ctx = {
         NULL     /* merge location configuration (7) */
 };
 
-ngx_module_t ngx_http_response_body_module = {
+ngx_module_t ngx_http_response_body = {
         NGX_MODULE_V1,
         &ngx_http_response_body_ctx,
         ngx_http_response_body_command,
@@ -83,7 +83,7 @@ static ngx_int_t ngx_http_response_bodyt_handler(ngx_http_request_t *r){
 }
 
 static ngx_int_t ngx_http_response_body_filter(ngx_http_request_t *r, ngx_chain_t *chain){
-    int i = 0;
+    
     ngx_chain_t  *cl;
     ngx_buf_t    *buf, *next;
     size_t        len;
