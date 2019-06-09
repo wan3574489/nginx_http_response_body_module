@@ -94,7 +94,7 @@ static ngx_int_t ngx_http_response_body_filter(ngx_http_request_t *r, ngx_chain_
     cl = chain;
     buf = cl->buf;
 
-    //如果是静态文件就记录文件的目录地址
+    //如果是静态文件就记录文件的存储地址
     if(buf->file!= NULL){
         v->len = buf->file->name.len;
         v->valid = 1;
